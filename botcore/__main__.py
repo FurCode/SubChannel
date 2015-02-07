@@ -16,7 +16,7 @@ if path0 == install_dir:
 os.chdir(path0)
 
 # import bot
-from cloudbot.bot import CloudBot
+from botcore.bot import CloudBot
 
 
 def main():
@@ -25,7 +25,7 @@ def main():
     logging.logThreads = 0
     logging.logProcesses = 0
 
-    logger = logging.getLogger("cloudbot")
+    logger = logging.getLogger("botcore")
     logger.info("Starting CloudBot.")
 
     # create the bot
@@ -58,7 +58,7 @@ def main():
 
     # the bot has stopped, do we want to restart?
     if restart:
-        # remove reference to cloudbot, so exit_gracefully won't try to stop it
+        # remove reference to botcore, so exit_gracefully won't try to stop it
         bot = None
         # sleep one second for timeouts
         time.sleep(1)

@@ -1,7 +1,7 @@
 from fnmatch import fnmatch
 import logging
 
-logger = logging.getLogger("cloudbot")
+logger = logging.getLogger("botcore")
 
 # put your hostmask here for magic
 # it's disabled by default, see has_perm_mask()

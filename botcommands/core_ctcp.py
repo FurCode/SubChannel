@@ -1,15 +1,15 @@
 import asyncio
 import time
 
-from cloudbot import hook
-import cloudbot
+from botcore import hook
+import botcore
 
 
 # CTCP responses
 @asyncio.coroutine
 @hook.regex(r'^\x01VERSION\x01$')
 def ctcp_version(notice):
-    notice("\x01VERSION: WeedbotRefresh v{} - http://github.com/FurCode/WeedBotRefresh".format(cloudbot.__version__))
+    notice("\x01VERSION: SubChannel v{} - http://github.com/FurCode/SubChannel".format(botcore.__version__))
 
 
 @asyncio.coroutine

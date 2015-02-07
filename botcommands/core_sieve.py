@@ -3,8 +3,8 @@ import logging
 
 from time import time
 
-from cloudbot import hook
-from cloudbot.util.tokenbucket import TokenBucket
+from botcore import hook
+from botcore.util.tokenbucket import TokenBucket
 
 inited = []
 
@@ -13,7 +13,7 @@ inited = []
 
 buckets = {}
 
-logger = logging.getLogger("cloudbot")
+logger = logging.getLogger("botcore")
 
 
 def task_clear(loop):

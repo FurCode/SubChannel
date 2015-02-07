@@ -3,7 +3,7 @@ import enum
 import logging
 import concurrent.futures
 
-logger = logging.getLogger("cloudbot")
+logger = logging.getLogger("botcore")
 
 
 @enum.unique

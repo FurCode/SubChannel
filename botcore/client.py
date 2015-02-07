@@ -1,9 +1,9 @@
 import asyncio
 import logging
 
-from cloudbot.permissions import PermissionManager
+from botcore.permissions import PermissionManager
 
-logger = logging.getLogger("cloudbot")
+logger = logging.getLogger("botcore")
 
 
 class Client:

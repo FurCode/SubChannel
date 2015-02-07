@@ -5,10 +5,10 @@ import ssl
 import logging
 from ssl import SSLContext
 
-from cloudbot.client import Client
-from cloudbot.event import Event, EventType
+from botcore.client import Client
+from botcore.event import Event, EventType
 
-logger = logging.getLogger("cloudbot")
+logger = logging.getLogger("botcore")
 
 irc_prefix_re = re.compile(r":([^ ]*) ([^ ]*) (.*)")
 irc_noprefix_re = re.compile(r"([^ ]*) (.*)")
@@ -119,8 +119,8 @@ class IrcClient(Client):
         # send the password, nick, and user
         self.set_pass(self.config["connection"].get("password"))
         self.set_nick(self.nick)
-        self.cmd("USER", self.config.get('user', 'cloudbot'), "3", "*",
-                 self.config.get('realname', 'CloudBotRefresh - http://cloudbot.pw'))
+        self.cmd("USER", self.config.get('user', 'botcore'), "3", "*",
+                 self.config.get('realname', 'CloudBotRefresh - http://botcore.pw'))
 
     def quit(self, reason=None):
         if self._quit:
@@ -371,7 +371,7 @@ class _IrcProtocol(asyncio.Protocol):
                 ctcp_text = None
 
             # Channel
-            # TODO: Migrate plugins using chan for storage to use chan.lower() instead so we can pass the original case
+            # TODO: Migrate botcommands using chan for storage to use chan.lower() instead so we can pass the original case
             if command_params and (len(command_params) > 2 or not command_params[0].startswith(":")):
 
                 if command_params[0].lower() == self.conn.nick.lower():

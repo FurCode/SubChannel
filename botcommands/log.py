@@ -3,15 +3,15 @@ import os
 import codecs
 import time
 
-import cloudbot
-from cloudbot import hook
-from cloudbot.event import EventType
+import botcore
+from botcore import hook
+from botcore.event import EventType
 
 
 # +---------+
 # | Formats |
 # +---------+
-from cloudbot.util.formatting import strip_colors
+from botcore.util.formatting import strip_colors
 
 base_formats = {
     EventType.message: "[{server}:{channel}] <{nick}> {content}",
@@ -47,7 +47,7 @@ ctcp_unknown_with_message = ("[{server}:{channel}] {nick} [{user}@{host}] "
 def format_event(event):
     """
     Format an event
-    :type event: cloudbot.event.Event
+    :type event: botcore.event.Event
     :rtype: str
     """
 
@@ -147,7 +147,7 @@ def get_log_filename(server, chan):
     current_time = time.gmtime()
     folder_name = time.strftime(folder_format, current_time)
     file_name = time.strftime(file_format.format(chan=chan, server=server), current_time).lower()
-    return os.path.join(cloudbot.logging_dir, folder_name, file_name)
+    return os.path.join(botcore.logging_dir, folder_name, file_name)
 
 
 def get_log_stream(server, chan):
@@ -178,7 +178,7 @@ def get_raw_log_filename(server):
     current_time = time.gmtime()
     folder_name = time.strftime(folder_format, current_time)
     file_name = time.strftime(raw_file_format.format(server=server), current_time).lower()
-    return os.path.join(cloudbot.logging_dir, "raw", folder_name, file_name)
+    return os.path.join(botcore.logging_dir, "raw", folder_name, file_name)
 
 
 def get_raw_log_stream(server):
@@ -204,7 +204,7 @@ def get_raw_log_stream(server):
 @hook.irc_raw("*", singlethread=True)
 def log_raw(event):
     """
-    :type event: cloudbot.event.Event
+    :type event: botcore.event.Event
     """
     logging_config = event.bot.config.get("logging", {})
     if not logging_config.get("raw_file_log", False):
@@ -218,7 +218,7 @@ def log_raw(event):
 @hook.irc_raw("*", singlethread=True)
 def log(event):
     """
-    :type event: cloudbot.event.Event
+    :type event: botcore.event.Event
     """
     text = format_event(event)
 
@@ -234,8 +234,8 @@ def log(event):
 @hook.irc_raw("*")
 def console_log(bot, event):
     """
-    :type bot: cloudbot.bot.CloudBot
-    :type event: cloudbot.event.Event
+    :type bot: botcore.bot.CloudBot
+    :type event: botcore.event.Event
     """
     text = format_event(event)
     if text is not None:

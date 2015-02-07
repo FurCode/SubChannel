@@ -7,23 +7,23 @@ import logging
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 
-import cloudbot
+import botcore
 
-logger = logging.getLogger("cloudbot")
+logger = logging.getLogger("botcore")
 
 
 class Config(dict):
     """
     :type filename: str
     :type path: str
-    :type bot: cloudbot.bot.CloudBot
+    :type bot: botcore.bot.CloudBot
     :type observer: Observer
     :type event_handler: ConfigEventHandler
     """
 
     def __init__(self, bot, *args, **kwargs):
         """
-        :type bot: cloudbot.bot.CloudBot
+        :type bot: botcore.bot.CloudBot
         :type args: list
         :type kwargs: dict
         """
@@ -80,14 +80,14 @@ class Config(dict):
 
 class ConfigEventHandler(PatternMatchingEventHandler):
     """
-    :type bot: cloudbot.bot.CloudBot
+    :type bot: botcore.bot.CloudBot
     :type config: core.config.Config
     :type logger: logging.Logger
     """
 
     def __init__(self, bot, config, *args, **kwargs):
         """
-        :type bot: cloudbot.bot.CloudBot
+        :type bot: botcore.bot.CloudBot
         :type config: Config
         """
         self.bot = bot

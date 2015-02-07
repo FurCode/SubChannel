@@ -1,6 +1,6 @@
 import time
 
-from cloudbot.util.tokenbucket import TokenBucket
+from botcore.util.tokenbucket import TokenBucket
 
 
 # noinspection PyProtectedMember

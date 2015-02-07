@@ -1,4 +1,4 @@
-from cloudbot.util.filesize import size, si, verbose
+from botcore.util.filesize import size, si, verbose
 
 
 def test_size():

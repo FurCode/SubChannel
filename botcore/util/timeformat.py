@@ -1,6 +1,6 @@
 import datetime
 
-from cloudbot.util import formatting
+from botcore.util import formatting
 
 
 def timesince(d, now=None, count=2, accuracy=6, simple=False):

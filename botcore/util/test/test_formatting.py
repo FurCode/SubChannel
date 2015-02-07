@@ -1,4 +1,4 @@
-from cloudbot.util.formatting import munge, dict_format, pluralize, strip_colors, truncate, truncate_str, \
+from botcore.util.formatting import munge, dict_format, pluralize, strip_colors, truncate, truncate_str, \
     strip_html, multi_replace, multiword_replace, truncate_words, smart_split, get_text_list
 
 test_munge_input = "The quick brown fox jumps over the lazy dog"

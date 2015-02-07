@@ -6,9 +6,9 @@ import re
 import functools
 from collections import deque
 
-from cloudbot import hook
+from botcore import hook
 
-logger = logging.getLogger("cloudbot")
+logger = logging.getLogger("botcore")
 
 nick_re = re.compile(":(.+?)!")
 

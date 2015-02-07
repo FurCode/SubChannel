@@ -9,16 +9,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.schema import MetaData
 
-import cloudbot
-from cloudbot.client import Client
-from cloudbot.config import Config
-from cloudbot.reloader import PluginReloader
-from cloudbot.plugin import PluginManager
-from cloudbot.event import Event, CommandEvent, RegexEvent, EventType
-from cloudbot.util import botvars, formatting
-from cloudbot.clients.irc import IrcClient
+import botcore
+from botcore.client import Client
+from botcore.config import Config
+from botcore.reloader import PluginReloader
+from botcore.plugin import PluginManager
+from botcore.event import Event, CommandEvent, RegexEvent, EventType
+from botcore.util import botvars, formatting
+from botcore.clients.irc import IrcClient
 
-logger = logging.getLogger("cloudbot")
+logger = logging.getLogger("botcore")
 
 
 def clean_name(n):
@@ -58,7 +58,7 @@ class CloudBot:
         # stores each bot server connection
         self.connections = []
 
-        # for plugins
+        # for botcommands
         self.logger = logger
 
         # declare and create data folder
@@ -80,13 +80,13 @@ class CloudBot:
                                                         '<https://github.com/CloudBotIRC/CloudBot/>')
 
         # setup db
-        db_path = self.config.get('database', 'sqlite:///cloudbot.db')
+        db_path = self.config.get('database', 'sqlite:///botcore.db')
         self.db_engine = create_engine(db_path)
         self.db_factory = sessionmaker(bind=self.db_engine)
         self.db_session = scoped_session(self.db_factory)
         self.db_metadata = MetaData()
 
-        # set botvars.metadata so plugins can access when loading
+        # set botvars.metadata so botcommands can access when loading
         botvars.metadata = self.db_metadata
         logger.debug("Database system initialised.")
 
@@ -104,11 +104,11 @@ class CloudBot:
     def run(self):
         """
         Starts CloudBot.
-        This will load plugins, connect to IRC, and process input.
+        This will load botcommands, connect to IRC, and process input.
         :return: True if CloudBot should be restarted, False otherwise
         :rtype: bool
         """
-        # Initializes the bot, plugins and connections
+        # Initializes the bot, botcommands and connections
         self.loop.run_until_complete(self._init_routine())
         # Wait till the bot stops. The stopped_future will be set to True to restart, False otherwise
         restart = self.loop.run_until_complete(self.stopped_future)
@@ -172,17 +172,17 @@ class CloudBot:
 
     @asyncio.coroutine
     def _init_routine(self):
-        # Load plugins
-        yield from self.plugin_manager.load_all(os.path.abspath("plugins"))
+        # Load botcommands
+        yield from self.plugin_manager.load_all(os.path.abspath("botcommands"))
 
-        # If we we're stopped while loading plugins, cancel that and just stop
+        # If we we're stopped while loading botcommands, cancel that and just stop
         if not self.running:
             logger.info("Killed while loading, exiting")
             return
 
         if self.plugin_reloading_enabled:
             # start plugin reloader
-            self.reloader.start(os.path.abspath("plugins"))
+            self.reloader.start(os.path.abspath("botcommands"))
 
         # Connect to servers
         yield from asyncio.gather(*[conn.connect() for conn in self.connections], loop=self.loop)

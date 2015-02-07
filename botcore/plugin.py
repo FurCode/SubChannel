@@ -8,10 +8,10 @@ import re
 
 import sqlalchemy
 
-from cloudbot.event import Event
-from cloudbot.util import botvars
+from botcore.event import Event
+from botcore.util import botvars
 
-logger = logging.getLogger("cloudbot")
+logger = logging.getLogger("botcore")
 
 
 def find_hooks(parent, module):
@@ -31,7 +31,7 @@ def find_hooks(parent, module):
     type_lists = {"command": command, "regex": regex, "irc_raw": raw, "sieve": sieve, "event": event, "on_start": on_start}
     for name, func in module.__dict__.items():
         if hasattr(func, "_cloudbot_hook"):
-            # if it has cloudbot hook
+            # if it has botcore hook
             func_hooks = func._cloudbot_hook
 
             for hook_type, func_hook in func_hooks.items():
@@ -69,7 +69,7 @@ class PluginManager:
     - CommandPlugin is for bot commands
     - RawPlugin hooks onto irc_raw irc lines
     - RegexPlugin loads a regex parameter, and executes on irc lines which match the regex
-    - SievePlugin is a catch-all sieve, which all other plugins go through before being executed.
+    - SievePlugin is a catch-all sieve, which all other botcommands go through before being executed.
 
     :type bot: cloudbot.bot.CloudBot
     :type plugins: dict[str, Plugin]
@@ -83,7 +83,7 @@ class PluginManager:
 
     def __init__(self, bot):
         """
-        Creates a new PluginManager. You generally only need to do this from inside cloudbot.bot.CloudBot
+        Creates a new PluginManager. You generally only need to do this from inside botcore.bot.CloudBot
         :type bot: cloudbot.bot.CloudBot
         """
         self.bot = bot
@@ -102,12 +102,12 @@ class PluginManager:
         """
         Load a plugin from each *.py file in the given directory.
 
-        Won't load any plugins listed in "disabled_plugins".
+        Won't load any botcommands listed in "disabled_plugins".
 
         :type plugin_dir: str
         """
         path_list = glob.iglob(os.path.join(plugin_dir, '*.py'))
-        # Load plugins asynchronously :O
+        # Load botcommands asynchronously :O
         yield from asyncio.gather(*[self.load_plugin(path) for path in path_list], loop=self.bot.loop)
 
     @asyncio.coroutine
@@ -115,7 +115,7 @@ class PluginManager:
         """
         Loads a plugin from the given path and plugin object, then registers all hooks from that plugin.
 
-        Won't load any plugins listed in "disabled_plugins".
+        Won't load any botcommands listed in "disabled_plugins".
 
         :type path: str
         """
@@ -140,7 +140,7 @@ class PluginManager:
         if file_name in self.plugins:
             yield from self.unload_plugin(file_path)
 
-        module_name = "plugins.{}".format(title)
+        module_name = "botcommands.{}".format(title)
         try:
             plugin_module = importlib.import_module(module_name)
             # if this plugin was loaded before, reload it
@@ -281,7 +281,7 @@ class PluginManager:
         del self.plugins[plugin.file_name]
 
         if self.bot.config.get("logging", {}).get("show_plugin_loading", True):
-            logger.info("Unloaded all plugins from {}.py".format(plugin.title))
+            logger.info("Unloaded all botcommands from {}.py".format(plugin.title))
 
         return True
 
@@ -581,7 +581,7 @@ class CommandHook(Hook):
     def __init__(self, plugin, cmd_hook):
         """
         :type plugin: Plugin
-        :type cmd_hook: cloudbot.util.hook._CommandHook
+        :type cmd_hook: botcore.util.hook._CommandHook
         """
         self.auto_help = cmd_hook.kwargs.pop("autohelp", True)
 
@@ -608,7 +608,7 @@ class RegexHook(Hook):
     def __init__(self, plugin, regex_hook):
         """
         :type plugin: Plugin
-        :type regex_hook: cloudbot.util.hook._RegexHook
+        :type regex_hook: botcore.util.hook._RegexHook
         """
         self.run_on_cmd = regex_hook.kwargs.pop("run_on_cmd", False)
 
@@ -632,7 +632,7 @@ class RawHook(Hook):
     def __init__(self, plugin, irc_raw_hook):
         """
         :type plugin: Plugin
-        :type irc_raw_hook: cloudbot.util.hook._RawHook
+        :type irc_raw_hook: botcore.util.hook._RawHook
         """
         super().__init__("irc_raw", plugin, irc_raw_hook)
 
@@ -652,7 +652,7 @@ class SieveHook(Hook):
     def __init__(self, plugin, sieve_hook):
         """
         :type plugin: Plugin
-        :type sieve_hook: cloudbot.util.hook._SieveHook
+        :type sieve_hook: botcore.util.hook._SieveHook
         """
         # We don't want to thread sieves by default - this is retaining old behavior for compatibility
         super().__init__("sieve", plugin, sieve_hook)
@@ -672,7 +672,7 @@ class EventHook(Hook):
     def __init__(self, plugin, event_hook):
         """
         :type plugin: Plugin
-        :type event_hook: cloudbot.util.hook._EventHook
+        :type event_hook: botcore.util.hook._EventHook
         """
         super().__init__("event", plugin, event_hook)
 
@@ -690,7 +690,7 @@ class OnStartHook(Hook):
     def __init__(self, plugin, on_start_hook):
         """
         :type plugin: Plugin
-        :type on_start_hook: cloudbot.util.hook._On_startHook
+        :type on_start_hook: botcore.util.hook._On_startHook
         """
         super().__init__("on_start", plugin, on_start_hook)
 

@@ -6,7 +6,7 @@ import html.entities
 
 from html.parser import HTMLParser
 
-from cloudbot.util.colors import strip_irc
+from botcore.util.colors import strip_irc
 
 
 # Constants

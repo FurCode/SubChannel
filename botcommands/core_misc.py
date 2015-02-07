@@ -1,7 +1,7 @@
 import asyncio
 import socket
 
-from cloudbot import hook
+from botcore import hook
 
 socket.setdefaulttimeout(10)
 
@@ -24,7 +24,7 @@ def invite(irc_paramlist, conn):
 @hook.irc_raw('004')
 def onjoin(conn, bot):
     """
-    :type conn: cloudbot.clients.clients.IrcClient
+    :type conn: botcore.clients.clients.IrcClient
     :type bot: cloudbot.bot.CloudBot
     """
     bot.logger.info("[{}|misc] Bot is sending join commands for network.".format(conn.name))
@@ -66,7 +66,7 @@ def onjoin(conn, bot):
 @hook.irc_raw('004')
 def keep_alive(conn):
     """
-    :type conn: cloudbot.clients.clients.IrcClient
+    :type conn: botcore.clients.clients.IrcClient
     """
     keepalive = conn.config.get('keep_alive', False)
     if keepalive:
