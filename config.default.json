@@ -1,0 +1,91 @@
+{
+  "modular": {
+    "channel_name_limit": "50",
+    "channel_separator": "-",
+    "channel_prefix": "##",
+    "buffer_size": 30
+  },
+  "connections": [
+    {
+      "name": "Snoonet",
+      "connection": {
+        "server": "irc.snoonet.org",
+        "port": 6697,
+        "ssl": true,
+        "ignore_cert": true,
+        "password": ""
+      },
+      "nick": "SubChanBot",
+      "user": "SubChanBot",
+      "real_name": "SubChanBot Alpha",
+      "avoid_notices": false,
+      "channels": [
+        "#casualconversation",
+        "#turkwarriors"
+      ],
+      "disabled_commands": [],
+      "acls": {},
+      "nickserv": {
+        "enabled": false,
+        "nickserv_password": "null",
+        "nickserv_user": "SubChanBot",
+        "nickserv_name": "nickserv",
+        "nickserv_command": "IDENTIFY"
+      },
+      "ratelimit": {
+        "max_tokens": 17.5,
+        "restore_rate": 2.5,
+        "message_cost": 5,
+        "strict": true
+      },
+      "permissions": {
+        "admins": {
+          "perms": [
+            "chandel",
+            "ignore",
+            "botcontrol",
+            "permissions_users",
+            "op"
+          ],
+          "users": [
+            "examplea!user@example.com",
+            "exampleb!user@example.com"
+          ]
+        },
+        "moderators": {
+          "perms": [
+            "ignore"
+          ],
+          "users": [
+            "examplec!user@example.com"
+          ]
+        }
+      },
+      "plugins": {},
+      "command_prefix": "!"
+    }
+  ],
+  "api_keys": {
+    "anope": ""
+  },
+  "database": "sqlite:///subchan.db",
+  "plugin_loading": {
+    "use_whitelist": false,
+    "blacklist": [
+      "about"
+    ],
+    "whitelist": []
+  },
+  "reloading": {
+    "config_reloading": true,
+    "plugin_reloading": false
+  },
+  "logging": {
+    "console_debug": false,
+    "file_debug": true,
+    "show_plugin_loading": true,
+    "show_motd": true,
+    "show_server_info": true,
+    "raw_file_log": false
+  }
+}

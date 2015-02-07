@@ -1,0 +1,4 @@
+praw
+pillow
+requests
+requests-oauthlib
