@@ -150,6 +150,9 @@ class IrcClient(Client):
     def notice(self, target, text):
         self.cmd("NOTICE", target, text)
 
+    def invite(self, target, text):
+        self.cmd("INVITE", target, text)
+
     def set_nick(self, nick):
         self.cmd("NICK", nick)
 
