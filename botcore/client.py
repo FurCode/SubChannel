@@ -102,6 +102,14 @@ class Client:
         """
         raise NotImplementedError
 
+    def kick_user(self, target, text):
+        """
+        Invites target to the given channel
+        :type target: str
+        :type text: str
+        """
+        raise NotImplementedError
+
     def set_nick(self, nick):
         """
         Sets the bot's nickname

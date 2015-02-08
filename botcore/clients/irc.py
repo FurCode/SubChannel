@@ -153,6 +153,9 @@ class IrcClient(Client):
     def invite(self, target, text):
         self.cmd("INVITE", target, text)
 
+    def kick_user(self, target, text):
+        self.cmd("KICK", target, text)
+
     def set_nick(self, nick):
         self.cmd("NICK", nick)
 
